@@ -26,7 +26,7 @@ Syntax highlighted code block
 
 [Link](url) and ![Image](src)
 ```
-# [How to check IP Blacklist](https://gist.github.com/amitsdalal/c32329ae3075634e0941ba46b5b9c4f0.js)
+# [How to check IP Blacklist](https://gist.github.com/amitsdalal/c32329ae3075634e0941ba46b5b9c4f0)
 For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
 
 ### Jekyll Themes
