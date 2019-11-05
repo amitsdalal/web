@@ -1,5 +1,7 @@
 ## Welcome to Amit Dalal's web
 
+### [RUN Nginx PHP-FPM using Docker on Alpine](https://github.com/amitsdalal/alpine-nginx-php)
+
 ### [Auto install chrome in windows using PowerShell](https://github.com/amitsdalal/install-chrome-win)
 
 ### [How to check IP Blacklist](https://gist.github.com/amitsdalal/c32329ae3075634e0941ba46b5b9c4f0)
