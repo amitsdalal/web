@@ -1,0 +1,223 @@
+<!DOCTYPE HTML>
+
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+    <title>The fstab line generator</title>
+    <style type="text/css">
+      html, body {
+      font-family: sans-serif;
+      }
+      h1 {
+      border: 5px solid #a7aaa3;
+      background: #8d9184;
+      padding: 0.5em;
+      }
+      h2, h3 {
+      color: #60a31C;
+      }
+      fieldset {
+      background: #F0FFF0;
+      }
+      table {
+      margin-top: 1em;
+      border-collapse:collapse;
+      }
+      table,td,th {
+      border: 1px solid black;
+      padding: 2px;
+      background: #93af5a;
+      }
+      th {
+      text-align: left;
+      }
+      dt {
+      font-weight: bold;
+      margin-top: 1em;
+      }
+      #device,#mountpoint {
+      width: 16em;
+      }
+      #dump,#fsck {
+      width: 2em;
+      }
+      #output {
+      width: 100%;
+      }
+    </style>
+
+    <script type="text/javascript">
+      function makeFstab() {
+      // Array to keep the data collected from the form
+      var output = new Object();
+
+      // Fetching and interpreting data from form
+      output['device'] = document.fstabdata.device.value;
+      output['mountpoint'] = document.fstabdata.mountpoint.value;
+      output['filesystem'] = document.fstabdata.filesystem.value;
+
+      if (document.fstabdata.automount.checked == true) {
+        output['automount'] = 'auto';
+      }
+      else {
+        output['automount'] = 'noauto';
+      }
+
+      if (document.fstabdata.usermount.checked == true) {
+        output['usermount'] = 'user';
+      }
+      else {
+        output['usermount'] = 'nouser';
+      }
+
+      if (document.fstabdata.exec.checked == true) {
+        output['exec'] = 'exec';
+      }
+      else {
+        output['exec'] = 'noexec';
+      }
+
+      if (document.fstabdata.writable.checked == true) {
+        output['writable'] = 'rw';
+      }
+      else {
+        output['writable'] = 'ro';
+      }
+
+      if (document.fstabdata.sync.checked == true) {
+        output['sync'] = 'sync';
+      }
+      else {
+        output['sync'] = 'async';
+      }
+
+      if (document.fstabdata.atime.checked == true) {
+        output['atime'] = 'atime';
+      }
+      else {
+        output['atime'] = 'noatime';
+      }
+
+
+      output['dump'] = document.fstabdata.dump.value;
+      output['fsck'] = document.fstabdata.fsck.value;
+
+      // Get additional input, if defined
+
+      if (document.fstabdata.iocharset.value != '') {
+        output['iocharset'] = document.fstabdata.iocharset.value;
+      }
+
+      if (document.fstabdata.user.value != '') {
+        output['user'] = document.fstabdata.user.value;
+      }
+
+      if (document.fstabdata.pass.value != '') {
+        output['pass'] = document.fstabdata.pass.value;
+      }
+
+      // Combine values into fstab line with the correct order and separators
+      // Where and what
+      var outputstring = (output['device'] + "\t" + output['mountpoint'] + "\t" + output['filesystem'] + "\t");
+
+      // Optional options
+      if (output['iocharset']) {
+        outputstring += ("iocharset=" + output['iocharset'] + ",")
+      }
+      if (output['user']) {
+        outputstring += ("user=" + output['user'] + ",")
+      }
+      if (output['pass']) {
+        outputstring += ("pass=" + output['pass'] + ",")
+      }
+
+
+      // Standard options
+      outputstring += (output['automount'] + "," + output['usermount'] + "," + output['exec'] + "," + output['writable'] + "," + output['sync'] + "," + output['atime'] + "\t" + output['dump'] + " " + output['fsck']);
+
+      // Output the output
+      document.fstabdata.output.value = outputstring;
+      
+      }
+    </script>
+  </head>
+
+  <body>
+    
+    <h1>The fstab line generator</h1>
+
+    <h2>The Generator</h2>
+
+    <form id="fstabdata" name="fstabdata">
+      <fieldset>
+	<table>
+	  <tr>
+	    <th><label for="device">Device address</label></th>
+	    <th><label for="mountpoint">Mount point</label></th>
+	    <th><label for="filesystem">Filesystem</label></th>
+	    <th><label for="automount">Auto mount</label></th>
+	    <th><label for="usermount">User can mount</label></th>
+	    <th><label for="exec">Executable</label></th>
+	    <th><label for="writable">Writable</label></th>
+	    <th><label for="sync">Sync</label></th>
+	    <th><label for="atime">Atime</label></th>
+	    <th><label for="dump">Dump</label></th>
+	    <th><label for="fsck">Fsck</label></th>
+	  </tr>
+	  <tr>
+	    <td><input id="device" name="device" type="text"></td>
+	    <td><input id="mountpoint" name="mountpoint" type="text"></td>
+	    <td>
+	      <select id="filesystem" name="filesystem">
+		<option value="auto" selected>auto</option>
+		<option value="ext2">ext2</option>
+		<option value="ext3">ext3</option>
+		<option value="ext4">ext4</option>
+		<option value="cifs">cifs</option>
+		<option value="nfs">nfs</option>
+		<option value="smbfs">smbfs</option>
+		<option value="vfat">vfat</option>
+		<option value="ntfs">ntfs</option>
+		<option value="reiserfs">reiserfs</option>
+		<option value="sshfs">sshfs</option>
+        <option value="xfs">xfs</option>
+	      </select>
+	    </td>
+	    <td><input id="automount" name="automount" type="checkbox" checked></td>
+	    <td><input id="usermount" name="usermount" type="checkbox"></td>
+	    <td><input id="exec" name="exec" type="checkbox" checked></td>
+	    <td><input id="writable" name="writable" type="checkbox" checked></td>
+	    <td><input id="sync" name="sync" type="checkbox"></td>
+	    <td><input id="atime" name="atime" type="checkbox" checked></td>
+	    <td><input id="dump" name="dump" type="text" value="0"></td>
+	    <td><input id="fsck" name="fsck" type="text" value="0"></td>
+	  </tr>
+	</table>
+	
+	<table>
+	  <tr>
+	    <th><label for="iocharset">Input/output charset</label></th>
+	    <td><input id="iocharset" name="iocharset" type="text"></td>
+	  </tr>
+	  <tr>
+	    <th><label for="user">Username</label></th>
+	    <td><input id="user" name="user" type="text"></td>
+	  </tr>
+	  <tr>
+	    <th><label for="pass">Password</label></th>
+	    <td><input id="pass" name="pass" type="text"></td>
+	  </tr>
+	</table>
+	
+	<p><input type="button" value="Generate fstab line" onClick="makeFstab()"></p>
+
+	<h3>Output</h3>
+
+	<p><input id="output" name="output" type="text"></p>
+
+      </fieldset>
+
+    </form>
+
+  </body>
+</html>
